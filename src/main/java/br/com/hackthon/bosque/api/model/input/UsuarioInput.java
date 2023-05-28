@@ -1,13 +1,22 @@
 package br.com.hackthon.bosque.api.model.input;
 
+import br.com.hackthon.bosque.domain.model.Sexo;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.time.LocalDate;
+
 @Setter@Getter
 public class UsuarioInput {
+
+    @NotBlank
+    @CPF
+    private String cpf;
     
     @NotBlank
     private String nome;
@@ -17,11 +26,13 @@ public class UsuarioInput {
     private String email;
 
     @NotBlank
-    private String telefone;
+    private LocalDate dataNascimento;
 
     @NotBlank
-    @CPF
-    private String cpf;
+    private String genero;
+
+    @NotBlank
+    private String telefone;
     
     private String nomeEmpresa;
     
