@@ -35,6 +35,7 @@ public class Usuario {
     private String senha;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @Column(nullable = false, name = "data_nascimento")
     private LocalDate dataNascimento;
 
     @Enumerated(EnumType.STRING)
@@ -43,13 +44,19 @@ public class Usuario {
     @Column(nullable = false)
     private String telefone;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "nome_empresa")
     private String nomeEmpresa;
     
     @CreationTimestamp
-    @Column(nullable = false, columnDefinition = "datetime")
+    @Column(nullable = false, columnDefinition = "datetime", name = "data_cadastro")
     private OffsetDateTime dataCadastro;
     
+    @ManyToMany
+    @JoinTable(name = "usuario_curso", joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id"))
+    private Set<Curso> cursos = new HashSet<>();
+
+
     @ManyToMany
     @JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "grupo_id"))

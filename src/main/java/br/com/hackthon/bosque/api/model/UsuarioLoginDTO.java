@@ -1,4 +1,4 @@
-package br.com.hackthon.bosque.domain.model;
+package br.com.hackthon.bosque.api.model;
 
 import lombok.Getter;
 import lombok.Setter;

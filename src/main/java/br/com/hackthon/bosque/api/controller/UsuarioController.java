@@ -3,17 +3,19 @@ package br.com.hackthon.bosque.api.controller;
 import br.com.hackthon.bosque.api.assembler.UsuarioInputDisassembler;
 import br.com.hackthon.bosque.api.assembler.UsuarioModelAssembler;
 import br.com.hackthon.bosque.api.model.UsuarioDTO;
+import br.com.hackthon.bosque.api.model.UsuarioLoginDTO;
+import br.com.hackthon.bosque.api.model.input.LoginResponse;
 import br.com.hackthon.bosque.api.model.input.SenhaInput;
 import br.com.hackthon.bosque.api.model.input.UsuarioComSenhaInput;
 import br.com.hackthon.bosque.api.model.input.UsuarioInput;
 import br.com.hackthon.bosque.domain.model.Usuario;
-import br.com.hackthon.bosque.domain.model.UsuarioLoginDTO;
 import br.com.hackthon.bosque.domain.repository.UsuarioRepository;
 import br.com.hackthon.bosque.domain.service.CadastroUsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,18 +52,24 @@ public class UsuarioController {
     @PostMapping("/logar")
     public ResponseEntity<UsuarioLoginDTO> Autentication(@RequestBody Optional<UsuarioLoginDTO> user) {
 
-
-
         return cadastroUsuario.logar(user).map(resp -> ResponseEntity.ok(resp))
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
-    @PostMapping
+//    @PostMapping("/auth/login")
+//    public LoginResponse login(@RequestBody @Validated UsuarioLoginDTO request) {
+//        return LoginResponse.builder()
+//                .accessToken("BLA BLA BLA")
+//                .build();
+//    }
+
+    @PostMapping("/cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioDTO adicionar(@RequestBody UsuarioComSenhaInput usuarioInput) {
+    public ResponseEntity<UsuarioDTO> adicionar(@RequestBody UsuarioComSenhaInput usuarioInput) {
         Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
 
-        return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuario));
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuario)));
     }
 
     @PutMapping("/{usuarioId}")

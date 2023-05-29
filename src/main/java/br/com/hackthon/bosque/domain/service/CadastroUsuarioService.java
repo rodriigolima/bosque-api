@@ -4,9 +4,12 @@ import br.com.hackthon.bosque.domain.exception.NegocioException;
 import br.com.hackthon.bosque.domain.exception.UsuarioNaoEncontradoException;
 import br.com.hackthon.bosque.domain.model.Grupo;
 import br.com.hackthon.bosque.domain.model.Usuario;
-import br.com.hackthon.bosque.domain.model.UsuarioLoginDTO;
+import br.com.hackthon.bosque.api.model.UsuarioLoginDTO;
 import br.com.hackthon.bosque.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,16 +29,16 @@ public class CadastroUsuarioService {
     @Transactional
     public Usuario salvar(Usuario usuario) {
         usuarioRepository.detach(usuario);
-
+        
         usuario.bcryptarSenha();
-       
-
+        
         Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
         
         if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
             throw new NegocioException(
                     String.format("Já existe um usuário cadastrado com o e-mail %s", usuario.getEmail()));
         }
+        
         
         usuario.setSenha(usuario.getSenha());
         
@@ -56,7 +59,7 @@ public class CadastroUsuarioService {
     @Transactional
     public void desassociarGrupo(Long usuarioId, Long grupoId) {
         Usuario usuario = buscarOuFalhar(usuarioId);
-        
+
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
 
         usuario.removerGrupo(grupo);
@@ -69,7 +72,7 @@ public class CadastroUsuarioService {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
 
         usuario.adicionarGrupo(grupo);
-        
+
     }
 
     @Transactional
