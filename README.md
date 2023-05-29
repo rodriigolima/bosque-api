@@ -71,7 +71,6 @@ Here are some endpoints you can call:
 ### Get endpoints, documentation configurations, etc. [🔝](#)
 
 ```
-http://localhost:8080/swagger-ui.html
 http://localhost:8080/usuarios
 http://localhost:8080/usuarios/:id
 ```
@@ -84,8 +83,14 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "nome" : "João da Silva",
-  
+    "cpf": "032.042.614-03",
+    "nome": "Rodrigo Lima",
+    "email": "rodrigolima@hotmail.com",
+    "senha": "123",
+    "dataNascimento": "1993-12-21",
+    "genero": "MASCULINO",
+    "telefone": "81992406566",
+    "nomeEmpresa": "Bosque"
 }
 
 RESPONSE: HTTP 201 (Created)
@@ -99,6 +104,8 @@ GET http://localhost:8080/usuarios
 
 Response: HTTP 200
 Content: list of application/json
+
+[]
 ```
 ### By ID  [🔝](#s) 
 ```
@@ -109,9 +116,20 @@ Content: application/json
 
 
 {
-        "id": 1,
-        "nome": "João da Silva"
-   
+    "id": 1,
+    "cpf": "999.9999.999-99",
+    "nome": "João da Silva",
+    "email": "joao@bosque.com.br",
+    "dataNascimento": "23/12/1993",
+    "genero": "MASCULINO",
+    "telefone": "95215648",
+    "nomeEmpresa": "Bosque",
+    "grupos": [
+        {
+            "id": 1,
+            "nome": "ALUNO"
+        }
+    ]
 }
 ```
 
@@ -123,9 +141,31 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    
-    "nome": "Maria da Silva",
-   
+    "cpf": "091.049.634-03",
+    "nome": "Rodrigo Lima",
+    "email": "rodrigolima@hotmail.com",
+    "dataNascimento": "21/12/1933",
+    "genero": "MASCULINO",
+    "telefone": "81992406566",
+    "nomeEmpresa": "Bosque",
+    "grupos": []
+}
+
+RESPONSE: HTTP 204 
+```
+
+### Update a password user resource [🔝](#)
+
+```
+PUT /usuarios/1/senha
+Accept: application/json
+Content-Type: application/json
+
+{
+    {
+    "senhaAtual": "abc",
+    "novaSenha": "123"
+}
 }
 
 RESPONSE: HTTP 204 
@@ -139,10 +179,12 @@ Content-Type: No content
 RESPONSE: HTTP 204 
 Content: No Content
 ```
-### To view Swagger 2 API docs [🔝](#)
 
-Run the server and browse to localhost:8080/swagger-ui.html
+### Other endpoints of user is in production [🔝](#) 
 
+- Grupo
+- Permissão
+- Cursos
 
 
 
