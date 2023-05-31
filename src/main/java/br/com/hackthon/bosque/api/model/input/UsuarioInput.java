@@ -1,7 +1,8 @@
 package br.com.hackthon.bosque.api.model.input;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
@@ -22,7 +23,7 @@ public class UsuarioInput {
     @Email
     private String email;
 
-    @NotBlank
+    @PastOrPresent
     private LocalDate dataNascimento;
 
     @NotBlank
