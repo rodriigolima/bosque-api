@@ -65,7 +65,7 @@ public class UsuarioController {
 
     @PostMapping("/cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<UsuarioDTO> adicionar(@RequestBody UsuarioComSenhaInput usuarioInput) {
+    public ResponseEntity<UsuarioDTO> adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
         Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
 
         

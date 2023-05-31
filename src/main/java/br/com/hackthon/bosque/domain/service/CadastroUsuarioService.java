@@ -25,23 +25,28 @@ public class CadastroUsuarioService {
     
     @Autowired
     private CadastroGrupoService cadastroGrupo;
-    
+
     @Transactional
     public Usuario salvar(Usuario usuario) {
         usuarioRepository.detach(usuario);
-        
+
         usuario.bcryptarSenha();
-        
-        Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
-        
-        if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
+
+        Optional<Usuario> usuarioExistenteEmail = usuarioRepository.findByEmail(usuario.getEmail());
+        Optional<Usuario> usuarioExistenteCpf = usuarioRepository.findByCpf(usuario.getCpf());
+
+        if (usuarioExistenteEmail.isPresent() && !usuarioExistenteEmail.get().equals(usuario)) {
             throw new NegocioException(
                     String.format("Já existe um usuário cadastrado com o e-mail %s", usuario.getEmail()));
         }
-        
-        
+
+        if (usuarioExistenteCpf.isPresent() && !usuarioExistenteCpf.get().equals(usuario)) {
+            throw new NegocioException(
+                    String.format("Já existe um usuário cadastrado com o CPF %s", usuario.getCpf()));
+        }
+
         usuario.setSenha(usuario.getSenha());
-        
+
         return usuarioRepository.save(usuario);
     }
 
